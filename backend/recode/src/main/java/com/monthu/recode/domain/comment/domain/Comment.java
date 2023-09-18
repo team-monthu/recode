@@ -1,5 +1,6 @@
 package com.monthu.recode.domain.comment.domain;
 
+import com.monthu.recode.global.entity.BaseTimeEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +12,7 @@ import lombok.Getter;
 @Entity
 @Table(name = "comment")
 @Getter
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column
