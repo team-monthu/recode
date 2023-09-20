@@ -9,7 +9,7 @@ export default function Layout({ children }: ILayoutProps) {
   return (
     <>
       <Header />
-      <div>{children}</div>
+      <div className="bg-slate-200 h-screen">{children}</div>
       <Footer />
     </>
   );
