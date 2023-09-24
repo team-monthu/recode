@@ -1,7 +1,6 @@
-package com.monthu.recode.domain.feed.domain;
+package com.monthu.recode.domain.comment.domain;
 
 import com.monthu.recode.global.entity.BaseTimeEntity;
-import com.monthu.recode.domain.feed.dto.WriteFeedReqDto;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,14 +10,12 @@ import javax.persistence.Table;
 import lombok.Getter;
 
 @Entity
-@Table(name = "feed")
+@Table(name = "comment")
 @Getter
-public class Feed extends BaseTimeEntity {
+public class Comment extends BaseTimeEntity {
 
-
-  @Id
-  @Column(name = "feed_id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column
   private Long id;
 
   @Column
@@ -31,12 +28,6 @@ public class Feed extends BaseTimeEntity {
   private Long writerId;
 
   @Column
-  private int viewCount;
-
-  @Column
-  private Long adoptedCommentId;
-
-  @Column
-  private boolean isDeleted;
+  private Long feedId;
 
 }
