@@ -4,30 +4,27 @@ import com.monthu.recode.domain.feed.application.repository.FeedRepository;
 import com.monthu.recode.domain.feed.domain.Feed;
 import com.monthu.recode.domain.feed.dto.WriteFeedReqDto;
 import com.monthu.recode.domain.feed.dto.WriteFeedResDto;
+import com.monthu.recode.domain.feed.exception.FeedNotFoundException;
+import com.monthu.recode.global.util.MarkdownUtil;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class FeedService implements WriteFeedUseCase {
+public class FeedService implements FeedUseCase {
 
   private final FeedRepository feedRepository;
+  private final MarkdownUtil markdownUtil;
 
   @Override
-  public WriteFeedResDto writeFeed(WriteFeedReqDto writeFeedReqDto, Long memberId) {
+  public WriteFeedResDto writeFeed(WriteFeedReqDto writeFeedReqDto) {
+    String htmlContent = markdownUtil.renderMarkdownToHtml(writeFeedReqDto.getContent());
 
-    Optional<Feed> feed = feedRepository.save(Feed.builder()
-        .title(writeFeedReqDto.getTitle())
-        .content(writeFeedReqDto.getContent())
-        .writerId(memberId)
-        .viewCount(0)
-        .build());
+    Optional<Feed> feed = feedRepository.save(writeFeedReqDto.of(writeFeedReqDto, htmlContent));
 
-    WriteFeedResDto writeFeedResDto = WriteFeedResDto.builder()
-        .feedId(feed.orElseThrow(RuntimeException::new).getId())
+    return WriteFeedResDto.builder()
+        .feedId(feed.orElseThrow(FeedNotFoundException::new).getId())
         .build();
-
-    return writeFeedResDto;
   }
 }

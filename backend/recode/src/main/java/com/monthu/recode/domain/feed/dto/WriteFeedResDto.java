@@ -6,11 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class WriteFeedResDto {
 
     private Long feedId;
+
+    @Builder
+    public WriteFeedResDto(Long feedId){
+        this.feedId = feedId;
+    }
 
 }
