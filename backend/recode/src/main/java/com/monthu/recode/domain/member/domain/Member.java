@@ -17,16 +17,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Member extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column
-    private OAuthProvider oAuthProvider;
+    private OauthProvider oauthProvider;
 
     @Column
-    private String oAuthId;
+    private String oauthId;
 
     @Column
     private String nickname;
@@ -49,12 +50,15 @@ public class Member extends BaseTimeEntity {
     @Column
     private String bio;
 
+    @Column
+    private String refreshToken;
+
     @Builder
-    private Member(OAuthProvider oAuthProvider, String oAuthId, String nickname,
+    private Member(OauthProvider oauthProvider, String oauthId, String nickname,
             String email, String profileImageUrl, String company, Boolean isDeleted,
-            Integer rating, String bio) {
-        this.oAuthProvider = oAuthProvider;
-        this.oAuthId = oAuthId;
+            Integer rating, String bio, String refreshToken) {
+        this.oauthProvider = oauthProvider;
+        this.oauthId = oauthId;
         this.nickname = nickname;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
@@ -62,13 +66,14 @@ public class Member extends BaseTimeEntity {
         this.isDeleted = isDeleted;
         this.rating = rating;
         this.bio = bio;
+        this.refreshToken = refreshToken;
     }
 
-    public static Member of(OAuthProvider oAuthProvider, String oAuthId, String nickname,
+    public static Member of(OauthProvider oauthProvider, String oauthId, String nickname,
             String email, String profileImageUrl, String company, String bio) {
         return Member.builder()
-                     .oAuthProvider(oAuthProvider)
-                     .oAuthId(oAuthId)
+                     .oauthProvider(oauthProvider)
+                     .oauthId(oauthId)
                      .nickname(nickname)
                      .email(email)
                      .profileImageUrl(profileImageUrl)
@@ -79,4 +84,7 @@ public class Member extends BaseTimeEntity {
                      .build();
     }
 
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

@@ -1,6 +1,6 @@
 package com.monthu.recode.domain.member.domain;
 
-public enum OAuthProvider {
+public enum OauthProvider {
 
-    KAKAO;
+    KAKAO, GOOGLE;
 }
