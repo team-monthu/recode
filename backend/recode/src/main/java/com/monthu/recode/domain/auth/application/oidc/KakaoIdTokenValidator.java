@@ -44,22 +44,16 @@ public class KakaoIdTokenValidator extends IDTokenValidator {
         final boolean CONTAINS_EMAIL = payload.containsKey(KAKAO_EMAIL_KEY);
         final boolean CONTAINS_PROFILE = payload.containsKey(KAKAO_PROFILE_IMAGE_KEY);
 
-        if (CONTAINS_EMAIL && CONTAINS_PROFILE) {
-            return OIDCMember.builder()
-                             .oauthProvider(OauthProvider.KAKAO)
-                             .oauthId(oAuthId)
-                             .email((String) payload.get(KAKAO_EMAIL_KEY))
-                             .profileImageUrl((String) payload.get(KAKAO_PROFILE_IMAGE_KEY))
-                             .build();
-        } else if (CONTAINS_EMAIL) {
-            return OIDCMember.withEmail(OauthProvider.KAKAO, oAuthId,
-                    (String) payload.get(KAKAO_EMAIL_KEY));
-        } else if (CONTAINS_PROFILE) {
-            return OIDCMember.withProfile(OauthProvider.KAKAO, oAuthId,
-                    (String) payload.get(KAKAO_PROFILE_IMAGE_KEY));
-        } else {
-            return OIDCMember.base(OauthProvider.KAKAO, oAuthId);
-        }
+        String email = CONTAINS_EMAIL ? (String) payload.get(KAKAO_EMAIL_KEY) : null;
+        String profileImageUrl =
+                CONTAINS_PROFILE ? (String) payload.get(KAKAO_PROFILE_IMAGE_KEY) : null;
+
+        return OIDCMember.builder()
+                         .oauthProvider(OauthProvider.KAKAO)
+                         .oauthId(oAuthId)
+                         .email(email)
+                         .profileImageUrl(profileImageUrl)
+                         .build();
     }
 
     private void checkPayload(Map<String, Object> payload) {

@@ -20,32 +20,4 @@ public class OIDCMember {
         this.email = email;
         this.profileImageUrl = profileImageUrl;
     }
-
-    public static OIDCMember withEmail(OauthProvider oauthProvider, String oauthId, String email) {
-        return OIDCMember.builder()
-                         .oauthProvider(oauthProvider)
-                         .oauthId(oauthId)
-                         .email(email)
-                         .profileImageUrl(null)
-                         .build();
-    }
-
-    public static OIDCMember withProfile(OauthProvider oauthProvider, String oauthId,
-            String profileImageUrl) {
-        return OIDCMember.builder()
-                         .oauthProvider(oauthProvider)
-                         .oauthId(oauthId)
-                         .profileImageUrl(profileImageUrl)
-                         .email(null)
-                         .build();
-    }
-
-    public static OIDCMember base(OauthProvider oauthProvider, String oauthId) {
-        return OIDCMember.builder()
-                         .oauthProvider(oauthProvider)
-                         .oauthId(oauthId)
-                         .email(null)
-                         .profileImageUrl(null)
-                         .build();
-    }
 }

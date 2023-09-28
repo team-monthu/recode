@@ -22,8 +22,6 @@ public class OauthConfiguration {
         return new KakaoIdTokenValidator(jwtValidator, kakaoOIDCProperty, kaKaoOauthClient);
     }
 
-//    @Bean("googleIDTokenValidator")
-//    public IDTokenValidator googleIDTokenValidation() {
-//
-//    }
+    //TODO : 구글 VALIDATOR 구현
+
 }

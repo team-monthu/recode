@@ -33,14 +33,11 @@ public class LoginUseCase {
         if (savedMember.isEmpty()) {
             return LoginResponseDto.isNew();
         }
+
         Member member = savedMember.get();
         String accessToken = jwtProvider.generateAccessToken(member);
-
-        if (!loginRequestDto.getIsLoginKeep()) {
-            return LoginResponseDto.logined(accessToken, null);
-        }
-
-        String refreshToken = jwtProvider.generateRefreshToken();
+        String refreshToken =
+                loginRequestDto.getIsLoginKeep() ? jwtProvider.generateRefreshToken() : null;
         member.setRefreshToken(refreshToken);
         return LoginResponseDto.logined(accessToken, refreshToken);
     }
