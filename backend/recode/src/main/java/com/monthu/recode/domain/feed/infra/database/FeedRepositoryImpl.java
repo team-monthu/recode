@@ -14,7 +14,7 @@ public class FeedRepositoryImpl implements FeedRepository {
   private final FeedJpaRepository feedJpaRepository;
 
   @Override
-  public Optional<Feed> save(Feed feed) {
+  public Feed save(Feed feed) {
     return feedJpaRepository.save(feed);
   }
 

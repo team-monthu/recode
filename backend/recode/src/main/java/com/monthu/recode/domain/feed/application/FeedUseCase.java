@@ -20,10 +20,10 @@ public class FeedUseCase {
   public WriteFeedResDto writeFeed(WriteFeedReqDto writeFeedReqDto) {
     String htmlContent = markdownUtil.renderMarkdownToHtml(writeFeedReqDto.getContent());
 
-    Optional<Feed> feed = feedRepository.save(writeFeedReqDto.of(writeFeedReqDto, htmlContent));
+    Feed feed = feedRepository.save(writeFeedReqDto.of(writeFeedReqDto, htmlContent));
 
     return WriteFeedResDto.builder()
-        .feedId(feed.orElseThrow(FeedNotFoundException::new).getId())
+        .feedId(feed.getId())
         .build();
   }
 }

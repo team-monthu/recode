@@ -7,6 +7,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,15 +25,15 @@ import org.hibernate.annotations.Where;
 @Table(name = "feed")
 @Where(clause = "is_deleted = false")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Feed extends BaseTimeEntity {
 
   @Builder
-  public Feed(Long id, String title, String content, Long writerId, Integer viewCount,
+  public Feed(Long id, String title, String markdown, String html, Long writerId, Integer viewCount,
       Long adoptedCommentId, Boolean isDeleted, List<Long> ids) {
     this.id = id;
     this.title = title;
-    this.content = content;
+    this.contents = new Contents(markdown, html);
     this.writerId = writerId;
     this.viewCount = viewCount;
     this.adoptedCommentId = adoptedCommentId;
@@ -53,7 +55,8 @@ public class Feed extends BaseTimeEntity {
   private String title;
 
   @Column
-  private String content;
+  @Embedded
+  private Contents contents;
 
   @Column
   private Long writerId;
@@ -68,18 +71,21 @@ public class Feed extends BaseTimeEntity {
   private Boolean isDeleted = Boolean.FALSE;
 
   @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(name = "fedd_stacks",
+  @CollectionTable(name = "feed_stacks",
       joinColumns = @JoinColumn(name = "feed_id"))
   private List<TechStack> stacks;
 
   @Embeddable
+  @NoArgsConstructor(access = AccessLevel.PROTECTED)
   public class TechStack {
+    private Long tech_stacks_id;
 
     private Long stackId;
 
     public TechStack(Long stackId){
       this.stackId = stackId;
     }
+
   }
 
 }

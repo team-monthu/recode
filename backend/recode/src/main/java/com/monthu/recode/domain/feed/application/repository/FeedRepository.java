@@ -6,6 +6,5 @@ import java.util.Optional;
 
 public interface FeedRepository {
 
-  Optional<Feed> save(Feed feed);
-
+  Feed save(Feed feed);
 }

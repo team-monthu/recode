@@ -27,7 +27,8 @@ public class WriteFeedReqDto {
   public Feed of (WriteFeedReqDto writeFeedReqDto, String html){
     return Feed.builder()
         .title(writeFeedReqDto.getTitle())
-        .content(html)
+        .markdown(writeFeedReqDto.getContent())
+        .html(html)
         .ids(writeFeedReqDto.getStacks())
         .writerId(writeFeedReqDto.getWriterId())
         .build();
