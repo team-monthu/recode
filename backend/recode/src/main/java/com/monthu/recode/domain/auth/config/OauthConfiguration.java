@@ -22,6 +22,6 @@ public class OauthConfiguration {
         return new KakaoIdTokenValidator(jwtValidator, kakaoOIDCProperty, kaKaoOauthClient);
     }
 
-    //TODO : 구글 VALIDATOR 구현
+    // TODO : 구글 VALIDATOR 구현
 
 }
