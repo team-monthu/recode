@@ -8,7 +8,6 @@ public class WriteFeedResDto {
 
     private Long feedId;
 
-    @Builder
     public WriteFeedResDto(Long feedId){
         this.feedId = feedId;
     }

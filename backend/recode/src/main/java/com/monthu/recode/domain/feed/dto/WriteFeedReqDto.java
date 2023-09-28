@@ -1,5 +1,6 @@
 package com.monthu.recode.domain.feed.dto;
 
+import com.monthu.recode.domain.feed.domain.Contents;
 import com.monthu.recode.domain.feed.domain.Feed;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
@@ -19,22 +20,20 @@ public class WriteFeedReqDto {
   private String title;
 
   @NotBlank
-  @NotNull private String content;
+  @NotNull private String markdown;
 
   @NotNull
   private Long writerId;
 
   private List<Long> stacks;
 
-  public Feed from(String html){
+  public Feed createFeed(){
     return Feed.builder()
-        .title(title)
-        .markdown(content)
-        .html(html)
-        .ids(stacks)
+        .markdown(markdown)
         .writerId(writerId)
+        .title(title)
+        .ids(stacks)
         .build();
   }
-
 
 }

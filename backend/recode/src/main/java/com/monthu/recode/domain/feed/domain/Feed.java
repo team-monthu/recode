@@ -1,6 +1,6 @@
 package com.monthu.recode.domain.feed.domain;
 
-import com.monthu.recode.domain.feed.infra.database.converter.ContentsConverterImpl;
+import com.monthu.recode.domain.feed.infra.database.converter.ContentsConverter;
 import com.monthu.recode.global.entity.BaseTimeEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +30,10 @@ import org.hibernate.annotations.Where;
 public class Feed extends BaseTimeEntity {
 
   @Builder
-  public Feed(Long id, String title, String markdown, String html, Long writerId, List<Long> ids) {
+  public Feed(Long id, String title, String markdown, Long writerId, List<Long> ids) {
     this.id = id;
     this.title = title;
-    this.contents = new Contents(markdown, html);
+    this.contents = new Contents(markdown);
     this.writerId = writerId;
     this.stacks = new ArrayList<>();
     for (Long stackId : ids) {
@@ -51,7 +51,7 @@ public class Feed extends BaseTimeEntity {
   private String title;
 
   @Column
-  @Convert(converter = ContentsConverterImpl.class)
+  @Convert(converter = ContentsConverter.class)
   private Contents contents;
 
   @Column
