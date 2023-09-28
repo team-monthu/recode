@@ -1,16 +1,19 @@
 package com.monthu.recode.domain.feed.infra.database.converter;
 
 
-import com.monthu.recode.domain.feed.application.repository.ContentsConverter;
+//import com.monthu.recode.domain.feed.application.repository.AttributeConverter;
+
 import com.monthu.recode.domain.feed.domain.Contents;
 import com.monthu.recode.global.util.MarkdownUtil;
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import lombok.RequiredArgsConstructor;
 
+@Converter
 @RequiredArgsConstructor
-public class ContentsConverterImpl implements ContentsConverter {
+public class ContentsConverterImpl implements AttributeConverter<Contents, String> {
 
   private final MarkdownUtil markdownUtil;
-
 
   @Override
   public String convertToDatabaseColumn(Contents contents) {
@@ -22,4 +25,5 @@ public class ContentsConverterImpl implements ContentsConverter {
     String html = markdownUtil.renderMarkdownToHtml(markdown);
     return markdown == null ? null : new Contents(markdown, html);
   }
+
 }

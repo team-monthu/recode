@@ -1,13 +1,14 @@
 package com.monthu.recode.domain.feed.domain;
 
+import com.monthu.recode.domain.feed.infra.database.converter.ContentsConverterImpl;
 import com.monthu.recode.global.entity.BaseTimeEntity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,26 +26,21 @@ import org.hibernate.annotations.Where;
 @Table(name = "feed")
 @Where(clause = "is_deleted = false")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Feed extends BaseTimeEntity {
 
   @Builder
-  public Feed(Long id, String title, String markdown, String html, Long writerId, Integer viewCount,
-      Long adoptedCommentId, Boolean isDeleted, List<Long> ids) {
+  public Feed(Long id, String title, String markdown, String html, Long writerId, List<Long> ids) {
     this.id = id;
     this.title = title;
     this.contents = new Contents(markdown, html);
     this.writerId = writerId;
-    this.viewCount = viewCount;
-    this.adoptedCommentId = adoptedCommentId;
-    this.isDeleted = isDeleted;
     this.stacks = new ArrayList<>();
-    for(Long stackId : ids){
-      TechStack techStack = new TechStack(id);
+    for (Long stackId : ids) {
+      TechStack techStack = new TechStack(stackId);
       stacks.add(techStack);
     }
   }
-
 
   @Id
   @Column(name = "feed_id")
@@ -55,14 +51,14 @@ public class Feed extends BaseTimeEntity {
   private String title;
 
   @Column
-  @Embedded
+  @Convert(converter = ContentsConverterImpl.class)
   private Contents contents;
 
   @Column
   private Long writerId;
 
   @Column
-  private Integer viewCount;
+  private Integer viewCount = 0;
 
   @Column
   private Long adoptedCommentId;
@@ -73,16 +69,17 @@ public class Feed extends BaseTimeEntity {
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "feed_stacks",
       joinColumns = @JoinColumn(name = "feed_id"))
-  private List<TechStack> stacks;
+  private List<TechStack> stacks = new ArrayList<>();
 
   @Embeddable
   @NoArgsConstructor(access = AccessLevel.PROTECTED)
-  public class TechStack {
+  public static class TechStack {
     private Long tech_stacks_id;
 
+    @Column(name = "stack_id")
     private Long stackId;
 
-    public TechStack(Long stackId){
+    public TechStack(Long stackId) {
       this.stackId = stackId;
     }
 

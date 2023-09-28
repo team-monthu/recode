@@ -5,11 +5,13 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.validation.annotation.Validated;
 
 @Getter
 @Validated
+@Builder
 public class WriteFeedReqDto {
 
   @NotBlank
@@ -24,13 +26,13 @@ public class WriteFeedReqDto {
 
   private List<Long> stacks;
 
-  public Feed of (WriteFeedReqDto writeFeedReqDto, String html){
+  public Feed from(String html){
     return Feed.builder()
-        .title(writeFeedReqDto.getTitle())
-        .markdown(writeFeedReqDto.getContent())
+        .title(title)
+        .markdown(content)
         .html(html)
-        .ids(writeFeedReqDto.getStacks())
-        .writerId(writeFeedReqDto.getWriterId())
+        .ids(stacks)
+        .writerId(writerId)
         .build();
   }
 
