@@ -12,7 +12,8 @@ import javax.persistence.Table;
 @Table(name = "follow")
 public class Follow extends BaseTimeEntity {
 
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column
   private Long id;
 
