@@ -6,8 +6,7 @@ import java.util.Optional;
 
 public interface MemberRepository {
 
-    Member save(Member member);
+  Member save(Member member);
 
-    Optional<Member> findByOauthProviderAndOauthId(OauthProvider oauthProvider, String oauthId);
-    
+  Optional<Member> findByOauthProviderAndOauthId(OauthProvider oauthProvider, String oauthId);
 }

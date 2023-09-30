@@ -8,30 +8,30 @@ import lombok.NoArgsConstructor;
 @Getter
 public class LoginResponseDto {
 
-    Boolean isNewUser;
-    String accessToken;
-    String refreshToken;
+  Boolean isNewMember;
+  String accessToken;
+  String refreshToken;
 
-    @Builder
-    public LoginResponseDto(Boolean isNewUser, String accessToken, String refreshToken) {
-        this.isNewUser = isNewUser;
-        this.accessToken = accessToken;
-        this.refreshToken = accessToken;
-    }
+  @Builder
+  public LoginResponseDto(Boolean isNewMember, String accessToken, String refreshToken) {
+    this.isNewMember = isNewMember;
+    this.accessToken = accessToken;
+    this.refreshToken = accessToken;
+  }
 
-    public static LoginResponseDto isNew() {
-        return LoginResponseDto.builder()
-                               .isNewUser(true)
-                               .accessToken(null)
-                               .refreshToken(null)
-                               .build();
-    }
+  public static LoginResponseDto newMember() {
+    return LoginResponseDto.builder()
+                           .isNewMember(true)
+                           .accessToken(null)
+                           .refreshToken(null)
+                           .build();
+  }
 
-    public static LoginResponseDto logined(String accessToken, String refreshToken) {
-        return LoginResponseDto.builder()
-                               .isNewUser(false)
-                               .accessToken(accessToken)
-                               .refreshToken(refreshToken)
-                               .build();
-    }
+  public static LoginResponseDto loggedInMember(String accessToken, String refreshToken) {
+    return LoginResponseDto.builder()
+                           .isNewMember(false)
+                           .accessToken(accessToken)
+                           .refreshToken(refreshToken)
+                           .build();
+  }
 }

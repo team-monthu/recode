@@ -74,6 +74,7 @@ public class Feed extends BaseTimeEntity {
   @Embeddable
   @NoArgsConstructor(access = AccessLevel.PROTECTED)
   public static class TechStack {
+
     private Long tech_stacks_id;
 
     @Column(name = "stack_id")

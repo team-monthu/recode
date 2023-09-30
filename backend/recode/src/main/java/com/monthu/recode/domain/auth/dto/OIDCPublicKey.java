@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 public class OIDCPublicKey {
 
-    private String kid;
-    private String alg;
-    private String use;
-    private String n;
-    private String e;
+  private String kid;
+  private String alg;
+  private String use;
+  private String n;
+  private String e;
 }

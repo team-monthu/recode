@@ -12,16 +12,16 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class MemberRepositoryImpl implements MemberRepository {
 
-    private final MemberJpaRepository memberJpaRepository;
+  private final MemberJpaRepository memberJpaRepository;
 
-    @Override
-    public Member save(Member member) {
-        return memberJpaRepository.save(member);
-    }
+  @Override
+  public Member save(Member member) {
+    return memberJpaRepository.save(member);
+  }
 
-    @Override
-    public Optional<Member> findByOauthProviderAndOauthId(OauthProvider oauthProvider,
-            String oauthId) {
-        return memberJpaRepository.findByOauthProviderAndOauthId(oauthProvider, oauthId);
-    }
+  @Override
+  public Optional<Member> findByOauthProviderAndOauthId(OauthProvider oauthProvider,
+      String oauthId) {
+    return memberJpaRepository.findByOauthProviderAndOauthId(oauthProvider, oauthId);
+  }
 }

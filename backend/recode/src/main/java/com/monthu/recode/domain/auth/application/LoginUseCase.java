@@ -17,28 +17,27 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LoginUseCase {
 
-    private final IDTokenValidatorHandler idTokenValidatorHandler;
-    private final MemberRepository memberRepository;
-    private final JwtProvider jwtProvider;
+  private final IDTokenValidatorHandler idTokenValidatorHandler;
+  private final MemberRepository memberRepository;
+  private final JwtProvider jwtProvider;
 
-    public LoginResponseDto oauthLogin(LoginRequestDto loginRequestDto) {
-        OIDCMember oidcMember = idTokenValidatorHandler.verifyIDToken(
-                loginRequestDto.getOauthProvider(),
-                loginRequestDto.getIdToken());
+  public LoginResponseDto oauthLogin(LoginRequestDto loginRequestDto) {
+    OIDCMember oidcMember = idTokenValidatorHandler.getOidcMemberByProviderAndIDToken(
+        loginRequestDto.getOauthProvider(),
+        loginRequestDto.getIdToken());
 
-        Optional<Member> savedMember = memberRepository.findByOauthProviderAndOauthId(
-                oidcMember.getOauthProvider(),
-                oidcMember.getOauthId());
+    Optional<Member> savedMember = memberRepository.findByOauthProviderAndOauthId(
+        oidcMember.getOauthProvider(),
+        oidcMember.getOauthId());
 
-        if (savedMember.isEmpty()) {
-            return LoginResponseDto.isNew();
-        }
-
-        Member member = savedMember.get();
-        String accessToken = jwtProvider.generateAccessToken(member);
-        String refreshToken =
-                loginRequestDto.getIsLoginKeep() ? jwtProvider.generateRefreshToken() : null;
-        member.setRefreshToken(refreshToken);
-        return LoginResponseDto.logined(accessToken, refreshToken);
+    if (savedMember.isEmpty()) {
+      return LoginResponseDto.newMember();
     }
+    
+    Member member = savedMember.get();
+    String accessToken = jwtProvider.generateAccessToken(member);
+    String refreshToken = jwtProvider.generateRefreshToken();
+    member.setRefreshToken(refreshToken);
+    return LoginResponseDto.loggedInMember(accessToken, refreshToken);
+  }
 }

@@ -13,15 +13,15 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class OauthConfiguration {
 
-    private final KakaoOauthClient kaKaoOauthClient;
-    private final JwtValidator jwtValidator;
-    private final KakaoOIDCProperty kakaoOIDCProperty;
+  private final KakaoOauthClient kaKaoOauthClient;
+  private final JwtValidator jwtValidator;
+  private final KakaoOIDCProperty kakaoOIDCProperty;
 
-    @Bean("kakaoIDTokenValidator")
-    public IDTokenValidator kakaoIDTokenValidation() {
-        return new KakaoIdTokenValidator(jwtValidator, kakaoOIDCProperty, kaKaoOauthClient);
-    }
+  @Bean("kakaoIDTokenValidator")
+  public IDTokenValidator kakaoIDTokenValidation() {
+    return new KakaoIdTokenValidator(jwtValidator, kakaoOIDCProperty, kaKaoOauthClient);
+  }
 
-    // TODO : 구글 VALIDATOR 구현
+  // TODO : 구글 VALIDATOR 구현
 
 }

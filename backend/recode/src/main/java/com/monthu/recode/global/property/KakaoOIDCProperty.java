@@ -12,11 +12,11 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("kakao")
 public class KakaoOIDCProperty {
 
-    private String iss;
-    private String aud;
-    private String adminKey;
+  private String iss;
+  private String aud;
+  private String adminKey;
 
-    public OIDCProperty toOIDCProperty() {
-        return new OIDCProperty(iss, aud);
-    }
+  public OIDCProperty toOIDCProperty() {
+    return new OIDCProperty(iss, aud);
+  }
 }

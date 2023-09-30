@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class OIDCPublicKeyList {
-    
-    List<OIDCPublicKey> keys;
+
+  List<OIDCPublicKey> keys;
 }

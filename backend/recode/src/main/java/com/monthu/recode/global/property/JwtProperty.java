@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties("jwt")
 public class JwtProperty {
-    private String accessKey;
-    private Integer accessExpiredMinute;
-    private String refreshKey;
-    private Integer refreshExpiredDay;
+
+  private String accessKey;
+  private Integer accessExpiredMinute;
+  private String refreshKey;
+  private Integer refreshExpiredDay;
 }

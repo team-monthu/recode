@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OauthController {
 
-    private final LoginUseCase loginUseCase;
+  private final LoginUseCase loginUseCase;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) {
-        return HttpResponse.okWithData(HttpStatus.OK, "로그인 성공",
-                loginUseCase.oauthLogin(loginRequestDto));
-    }
+  @PostMapping("/login")
+  public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) {
+    return HttpResponse.okWithData(HttpStatus.OK, "로그인 성공",
+        loginUseCase.oauthLogin(loginRequestDto));
+  }
 
 }
