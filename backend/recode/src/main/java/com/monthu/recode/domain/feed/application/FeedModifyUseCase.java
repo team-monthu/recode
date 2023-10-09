@@ -5,6 +5,7 @@ import com.monthu.recode.domain.feed.exception.FeedNotFoundException;
 import com.monthu.recode.domain.feed.infra.database.FeedRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -12,6 +13,7 @@ public class FeedModifyUseCase {
 
     private final FeedRepositoryImpl feedRepository;
 
+    @Transactional
     public void modifyFeed(ModifyFeedDto modifyFeedDto) {
         feedRepository.findById(modifyFeedDto.getId()).map(
                         feed -> {
