@@ -73,6 +73,7 @@ public class Feed extends BaseTimeEntity {
 
   @Embeddable
   @NoArgsConstructor(access = AccessLevel.PROTECTED)
+  @Getter
   public static class TechStack {
 
     private Long tech_stacks_id;
@@ -84,6 +85,10 @@ public class Feed extends BaseTimeEntity {
       this.stackId = stackId;
     }
 
+  }
+
+  public void increaseViewCount(){
+    this.viewCount++;
   }
 
 }
