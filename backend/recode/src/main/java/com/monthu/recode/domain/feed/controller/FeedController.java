@@ -1,9 +1,11 @@
 package com.monthu.recode.domain.feed.controller;
 
 import com.monthu.recode.domain.feed.application.FeedCreateUseCase;
+import com.monthu.recode.domain.feed.application.FeedModifyUseCase;
 import com.monthu.recode.domain.feed.application.FeedSearchUseCase;
 import com.monthu.recode.domain.feed.domain.Feed;
 import com.monthu.recode.domain.feed.dto.FeedListResDto;
+import com.monthu.recode.domain.feed.dto.ModifyFeedDto;
 import com.monthu.recode.domain.feed.dto.WriteFeedReqDto;
 import com.monthu.recode.global.dto.HttpResponse;
 import java.util.stream.Collectors;
@@ -15,10 +17,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,6 +32,7 @@ public class FeedController {
 
     private final FeedCreateUseCase feedCreateUseCase;
     private final FeedSearchUseCase feedSearchUseCase;
+    private final FeedModifyUseCase feedModifyUseCase;
 
     @PostMapping
     public ResponseEntity<?> writeFeed(@RequestBody @Validated WriteFeedReqDto writeFeedReqDto) {
@@ -37,9 +42,16 @@ public class FeedController {
     }
 
     @GetMapping("/{feedId}")
-    public ResponseEntity<?> findFeedDetails(@PathVariable Long feedId) {
+    public ResponseEntity<?> findFeedDetails(@PathVariable Long feedId,
+            @RequestParam(defaultValue = "true") Boolean updateViewCount) {
         return HttpResponse.okWithData(HttpStatus.OK, "피드 상세 정보를 반환합니다.",
-                feedSearchUseCase.searchFeedDetailsById(feedId));
+                feedSearchUseCase.searchFeedDetailsById(feedId, updateViewCount));
+    }
+
+    @GetMapping("/{feedId}")
+    public ResponseEntity<?> findFeedDetailsWithMarkdown(@PathVariable Long feedId){
+        return HttpResponse.okWithData(HttpStatus.OK, "피드 상세 조회를 반환합니다.",
+                feedSearchUseCase.searchFeedDetailsWithMarkdown(feedId));
     }
 
     @GetMapping("/main")
@@ -49,6 +61,12 @@ public class FeedController {
                 new PageImpl<>(
                         feeds.stream().map(FeedListResDto::from).collect(Collectors.toList()),
                         pageable, feeds.getTotalElements()));
+    }
+
+    @PatchMapping
+    public ResponseEntity<?> updateFeed(@RequestBody ModifyFeedDto modifyFeedDto) {
+        feedModifyUseCase.modifyFeed(modifyFeedDto);
+        return HttpResponse.ok(HttpStatus.OK, "피드 수정이 완료되었습니다.");
     }
 
 }

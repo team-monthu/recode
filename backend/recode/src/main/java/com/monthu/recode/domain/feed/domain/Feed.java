@@ -91,4 +91,15 @@ public class Feed extends BaseTimeEntity {
     this.viewCount++;
   }
 
+  public void updateFeed(String title, String markdown, List<Long> ids){
+    this.title = title;
+    this.contents = new Contents(markdown);
+    List<TechStack> stacks = new ArrayList<>();
+    for (Long stackId : ids) {
+      TechStack techStack = new TechStack(stackId);
+      stacks.add(techStack);
+    }
+    this.stacks = stacks;
+  }
+
 }
