@@ -102,4 +102,6 @@ public class Feed extends BaseTimeEntity {
     this.stacks = stacks;
   }
 
+  public void deleteFeed(){ this.isDeleted = true; }
+
 }

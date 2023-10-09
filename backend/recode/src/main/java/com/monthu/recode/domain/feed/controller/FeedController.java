@@ -1,6 +1,7 @@
 package com.monthu.recode.domain.feed.controller;
 
 import com.monthu.recode.domain.feed.application.FeedCreateUseCase;
+import com.monthu.recode.domain.feed.application.FeedDeleteUseCase;
 import com.monthu.recode.domain.feed.application.FeedModifyUseCase;
 import com.monthu.recode.domain.feed.application.FeedSearchUseCase;
 import com.monthu.recode.domain.feed.domain.Feed;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +35,7 @@ public class FeedController {
     private final FeedCreateUseCase feedCreateUseCase;
     private final FeedSearchUseCase feedSearchUseCase;
     private final FeedModifyUseCase feedModifyUseCase;
+    private final FeedDeleteUseCase feedDeleteUseCase;
 
     @PostMapping
     public ResponseEntity<?> writeFeed(@RequestBody @Validated WriteFeedReqDto writeFeedReqDto) {
@@ -67,6 +70,12 @@ public class FeedController {
     public ResponseEntity<?> updateFeed(@RequestBody ModifyFeedDto modifyFeedDto) {
         feedModifyUseCase.modifyFeed(modifyFeedDto);
         return HttpResponse.ok(HttpStatus.OK, "피드 수정이 완료되었습니다.");
+    }
+
+    @DeleteMapping("/{feedId}")
+    public ResponseEntity<?> deleteFeed(@PathVariable Long feedId){
+        feedDeleteUseCase.deleteFeed(feedId);
+        return HttpResponse.ok(HttpStatus.OK, "피드가 삭제되었습니다.");
     }
 
 }
