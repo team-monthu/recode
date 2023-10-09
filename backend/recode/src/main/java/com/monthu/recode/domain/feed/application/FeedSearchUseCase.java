@@ -1,10 +1,14 @@
 package com.monthu.recode.domain.feed.application;
 
 import com.monthu.recode.domain.feed.domain.Feed;
+import com.monthu.recode.domain.feed.dto.FeedListResDto;
 import com.monthu.recode.domain.feed.dto.FindFeedDetailsResDto;
 import com.monthu.recode.domain.feed.exception.FeedNotFoundException;
 import com.monthu.recode.domain.feed.infra.database.FeedRepositoryImpl;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +19,7 @@ public class FeedSearchUseCase {
     private final FeedRepositoryImpl feedRepository;
 
 
-    public FindFeedDetailsResDto searchFeedDetailsById(Long feedId,
-            ChangeCountConsumer<Feed> consumer) {
+    public FindFeedDetailsResDto searchFeedDetailsById(Long feedId) {
         Feed foundFeed = feedRepository.findById(feedId).map(
                 feed -> {
                     updateViewCount(feed, Feed::increaseViewCount);
@@ -35,4 +38,7 @@ public class FeedSearchUseCase {
         feedRepository.save(feed);
     }
 
+    public Page<Feed> searchMainFeeds(Pageable pageable) {
+        return feedRepository.findAll(pageable);
+    }
 }

@@ -2,9 +2,15 @@ package com.monthu.recode.domain.feed.controller;
 
 import com.monthu.recode.domain.feed.application.FeedCreateUseCase;
 import com.monthu.recode.domain.feed.application.FeedSearchUseCase;
+import com.monthu.recode.domain.feed.domain.Feed;
+import com.monthu.recode.domain.feed.dto.FeedListResDto;
 import com.monthu.recode.domain.feed.dto.WriteFeedReqDto;
 import com.monthu.recode.global.dto.HttpResponse;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,11 +19,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/feed")
+@RequestMapping("api/feed")
 @RequiredArgsConstructor
 public class FeedController {
 
@@ -35,6 +40,15 @@ public class FeedController {
     public ResponseEntity<?> findFeedDetails(@PathVariable Long feedId) {
         return HttpResponse.okWithData(HttpStatus.OK, "피드 상세 정보를 반환합니다.",
                 feedSearchUseCase.searchFeedDetailsById(feedId));
+    }
+
+    @GetMapping("/main")
+    public ResponseEntity<?> findMainFeeds(Pageable pageable) {
+        Page<Feed> feeds = feedSearchUseCase.searchMainFeeds(pageable);
+        return HttpResponse.okWithData(HttpStatus.OK, "메인 피드 목록을 반환합니다.",
+                new PageImpl<>(
+                        feeds.stream().map(FeedListResDto::from).collect(Collectors.toList()),
+                        pageable, feeds.getTotalElements()));
     }
 
 }

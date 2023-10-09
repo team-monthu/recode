@@ -5,6 +5,8 @@ import com.monthu.recode.domain.feed.domain.Feed;
 import com.monthu.recode.domain.feed.infra.database.jpa.FeedJpaRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,6 +22,10 @@ public class FeedRepositoryImpl implements FeedRepository {
 
   public Optional<Feed> findById(Long id){
     return feedJpaRepository.findById(id);
+  }
+
+  public Page<Feed> findAll(Pageable pageable){
+    return feedJpaRepository.findAllByOrderByModifiedAtDesc(pageable);
   }
 
 }

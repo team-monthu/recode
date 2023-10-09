@@ -2,6 +2,7 @@ package com.monthu.recode.domain.feed.dto;
 
 import com.monthu.recode.domain.feed.domain.Feed;
 import com.monthu.recode.domain.feed.domain.Feed.TechStack;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Builder;
@@ -17,6 +18,8 @@ public class FindFeedDetailsResDto {
     private Integer viewCount;
     private Long adoptedCommentId;
     private List<Long> stacks;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
     @Builder
     public FindFeedDetailsResDto(Feed feed){
@@ -26,6 +29,8 @@ public class FindFeedDetailsResDto {
         this.writerId = feed.getWriterId();
         this.viewCount = feed.getViewCount();
         this.adoptedCommentId = feed.getAdoptedCommentId();
+        this.createdAt = feed.getCreatedAt();
+        this.modifiedAt = feed.getModifiedAt();
         this.stacks = feed.getStacks().stream()
                 .map(TechStack::getStackId)
                 .collect(Collectors.toList());
