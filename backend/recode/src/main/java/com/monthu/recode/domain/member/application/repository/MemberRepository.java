@@ -9,4 +9,6 @@ public interface MemberRepository {
   Member save(Member member);
 
   Optional<Member> findByOauthProviderAndOauthId(OauthProvider oauthProvider, String oauthId);
+
+  boolean existsByOauthProviderAndOauthId(OauthProvider oauthProvider, String oauthId);
 }

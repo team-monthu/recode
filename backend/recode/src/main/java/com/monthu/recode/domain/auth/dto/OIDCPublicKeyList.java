@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OIDCPublicKeyList {
 
-  List<OIDCPublicKey> keys;
+  private List<OIDCPublicKey> keys;
 }

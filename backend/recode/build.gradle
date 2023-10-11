@@ -52,6 +52,9 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    //aws
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
+
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
