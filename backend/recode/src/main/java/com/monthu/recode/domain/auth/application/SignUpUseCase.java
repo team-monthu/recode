@@ -26,6 +26,7 @@ public class SignUpUseCase {
 
   private final String MEMBER_PROFILE_DIRECTORY = "member/profile/";
   private final String DEFAULT_IMAGE_URL = "https://recode-bucket.s3.ap-northeast-2.amazonaws.com/member/profile/defaultProfileImage.png";
+  private final String BUCKET_URL = "https://recode-bucket.s3.ap-northeast-2.amazonaws.com/";
 
   private final IDTokenValidatorHandler idTokenValidatorHandler;
   private final MemberRepository memberRepository;
@@ -60,6 +61,9 @@ public class SignUpUseCase {
 
   private Member createMember(OIDCMember oidcMember, SignUpRequestDto signUpRequestDto,
       String profileImageFileName, List<TechStack> stacks) {
+    profileImageFileName = profileImageFileName.startsWith(MEMBER_PROFILE_DIRECTORY)
+        ? BUCKET_URL + profileImageFileName
+        : profileImageFileName;
     return Member.builder()
                  .oauthProvider(signUpRequestDto.getOauthProvider())
                  .oauthId(oidcMember.getOauthId())
