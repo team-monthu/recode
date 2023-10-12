@@ -18,7 +18,6 @@ public class FeedCreateUseCase {
   private final TechStackRepository techStackRepository;
 
   public WriteFeedResDto writeFeed(WriteFeedReqDto writeFeedReqDto) {
-    // TODO : markdown으로부터 이미지 추출 및 저장
     List<TechStack> stacks = techStackRepository.findByIdIn(writeFeedReqDto.getStackIds());
     increaseTaggedCount(stacks);
     Feed feed = feedRepository.save(writeFeedReqDto.createFeedWithStacks(stacks));

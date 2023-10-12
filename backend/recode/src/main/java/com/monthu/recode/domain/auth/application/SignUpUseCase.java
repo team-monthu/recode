@@ -37,7 +37,7 @@ public class SignUpUseCase {
   public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
     OIDCMember oidcMember = idTokenValidatorHandler.getOidcMemberByProviderAndIDToken(
         signUpRequestDto.getOauthProvider(), signUpRequestDto.getIdToken());
-    checkExistedMember(oidcMember);
+    checkMemberExistsOrThrow(oidcMember);
 
     String profileImageFileName = getImageUrl(signUpRequestDto);
     s3Uploader.upload(profileImageFileName, signUpRequestDto.getProfileImage());
@@ -61,9 +61,9 @@ public class SignUpUseCase {
 
   private Member createMember(OIDCMember oidcMember, SignUpRequestDto signUpRequestDto,
       String profileImageFileName, List<TechStack> stacks) {
-    profileImageFileName = profileImageFileName.startsWith(MEMBER_PROFILE_DIRECTORY)
-        ? BUCKET_URL + profileImageFileName
-        : profileImageFileName;
+    if (profileImageFileName.startsWith(MEMBER_PROFILE_DIRECTORY)) {
+      profileImageFileName = BUCKET_URL + profileImageFileName;
+    }
     return Member.builder()
                  .oauthProvider(signUpRequestDto.getOauthProvider())
                  .oauthId(oidcMember.getOauthId())
@@ -77,13 +77,17 @@ public class SignUpUseCase {
   }
 
   private String getImageUrl(SignUpRequestDto signUpRequestDto) {
-    if (!signUpRequestDto.getProfileImageUrl()
-                         .isEmpty()) {
+    boolean isUrlEmpty = signUpRequestDto.getProfileImageUrl()
+                                         .isEmpty();
+    boolean isImageNull = signUpRequestDto.getProfileImage() == null;
+    boolean isImageEmpty = signUpRequestDto.getProfileImage()
+                                           .isEmpty();
+
+    if (!isUrlEmpty) {
       return signUpRequestDto.getProfileImageUrl();
     }
-    if (signUpRequestDto.getProfileImageUrl() == null
-        && (signUpRequestDto.getProfileImage() == null || signUpRequestDto.getProfileImage()
-                                                                          .isEmpty())) {
+    if (isUrlEmpty
+        && (isImageNull || isImageEmpty)) {
       return DEFAULT_IMAGE_URL;
     }
     return makeFileName(signUpRequestDto.getProfileImage());
@@ -94,7 +98,7 @@ public class SignUpUseCase {
     return MEMBER_PROFILE_DIRECTORY + UUID.randomUUID() + "." + extension;
   }
 
-  private void checkExistedMember(OIDCMember oidcMember) {
+  private void checkMemberExistsOrThrow(OIDCMember oidcMember) {
     if (memberRepository.existsByOauthProviderAndOauthId(oidcMember.getOauthProvider(),
         oidcMember.getOauthId())) {
       throw new AlreadyExistedMemberException("이미 존재하는 회원입니다.");
