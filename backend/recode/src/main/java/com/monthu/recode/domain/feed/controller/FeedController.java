@@ -45,28 +45,26 @@ public class FeedController {
     }
 
     @GetMapping("/{feedId}")
-    public ResponseEntity<?> findFeedDetails(@PathVariable Long feedId,
-            @RequestParam(defaultValue = "true") Boolean updateViewCount) {
+    public ResponseEntity<?> findFeedDetails(@PathVariable Long feedId) {
         return HttpResponse.okWithData(HttpStatus.OK, "피드 상세 정보를 반환합니다.",
-                feedSearchUseCase.searchFeedDetailsById(feedId, updateViewCount));
+                feedSearchUseCase.searchFeedDetailsById(feedId));
     }
 
-    // todo 매핑되는 주소 변경
-    @GetMapping("/{feedId}")
+    @GetMapping("/details/{feedId}")
     public ResponseEntity<?> findFeedDetailsWithMarkdown(@PathVariable Long feedId){
         return HttpResponse.okWithData(HttpStatus.OK, "피드 상세 조회를 반환합니다.",
                 feedSearchUseCase.searchFeedDetailsWithMarkdown(feedId));
     }
 
     // todo 메인피드 로직 추가
-    @GetMapping("/main")
-    public ResponseEntity<?> findMainFeeds(Pageable pageable) {
-        Page<Feed> feeds = feedSearchUseCase.searchMainFeeds(pageable);
-        return HttpResponse.okWithData(HttpStatus.OK, "메인 피드 목록을 반환합니다.",
-                new PageImpl<>(
-                        feeds.stream().map(FeedListResDto::from).collect(Collectors.toList()),
-                        pageable, feeds.getTotalElements()));
-    }
+//    @GetMapping("/main")
+//    public ResponseEntity<?> findMainFeeds(Pageable pageable) {
+//        Page<Feed> feeds = feedSearchUseCase.searchMainFeeds(pageable);
+//        return HttpResponse.okWithData(HttpStatus.OK, "메인 피드 목록을 반환합니다.",
+//                new PageImpl<>(
+//                        feeds.stream().map(FeedListResDto::from).collect(Collectors.toList()),
+//                        pageable, feeds.getTotalElements()));
+//    }
 
     @PatchMapping
     public ResponseEntity<?> updateFeed(@RequestBody ModifyFeedReqDto modifyFeedReqDto) {
@@ -85,7 +83,5 @@ public class FeedController {
     // todo 내가 스크랩한 피드 조회
     // todo 추천 피드 조회
     // todo 댓글 채택
-    // todo 피드 좋아요
-    // todo 피드 스크랩
 
 }

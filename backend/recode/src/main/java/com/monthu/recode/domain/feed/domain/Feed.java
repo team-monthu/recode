@@ -80,4 +80,9 @@ public class Feed extends BaseTimeEntity {
 
   public void deleteFeed(){ this.isDeleted = true; }
 
+  public Integer getLikeCount(){
+    return feedLikes.size();
+  }
+
+
 }

@@ -1,9 +1,6 @@
 package com.monthu.recode.domain.feed.dto;
 
-import com.monthu.recode.domain.comment.domain.Comment;
 import com.monthu.recode.domain.feed.domain.Feed;
-import com.monthu.recode.domain.feed.domain.Feed.TechStack;
-import com.monthu.recode.domain.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,23 +18,26 @@ public class FindFeedDetailsResDto {
     private MemberResDto writer;
     private Integer viewCount;
     private CommentResDto adoptedComment;
-    private List<Long> stacks;
+    private List<String> stacks;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     @Builder
-    public FindFeedDetailsResDto(Feed feed, Member writer, Comment comment){
+    public FindFeedDetailsResDto(Feed feed, MemberResDto writer, CommentResDto adoptedComment,
+            Integer likeCount, Integer commentCount) {
         this.id = feed.getId();
         this.title = feed.getTitle();
         this.contents = feed.getContents().getHtml();
-        this.writerId = feed.getWriterId();
+        this.writer = writer;
         this.viewCount = feed.getViewCount();
-        this.adoptedCommentId = feed.getAdoptedCommentId();
+        this.adoptedComment = adoptedComment;
         this.createdAt = feed.getCreatedAt();
         this.modifiedAt = feed.getModifiedAt();
-        this.stacks = feed.getStacks().stream()
-                .map(TechStack::getStackId)
+        this.stacks = feed.getFeedStacks().stream()
+                .map(feedStack -> feedStack.getTechStack().getImageUrl())
                 .collect(Collectors.toList());
+        this.likeCount = likeCount;
+        this.commentCount = commentCount;
     }
 
 }

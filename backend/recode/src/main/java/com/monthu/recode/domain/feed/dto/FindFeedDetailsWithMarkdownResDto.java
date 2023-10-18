@@ -1,7 +1,6 @@
 package com.monthu.recode.domain.feed.dto;
 
 import com.monthu.recode.domain.feed.domain.Feed;
-import com.monthu.recode.domain.feed.domain.Feed.TechStack;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +15,7 @@ public class FindFeedDetailsWithMarkdownResDto {
     private Long writerId;
     private Integer viewCount;
     private Long adoptedCommentId;
-    private List<Long> stacks;
+    private List<String> stacks;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
@@ -31,7 +30,8 @@ public class FindFeedDetailsWithMarkdownResDto {
                 .writerId(feed.getWriterId())
                 .createdAt(feed.getCreatedAt())
                 .modifiedAt(feed.getModifiedAt())
-                .stacks(feed.getStacks().stream().map(TechStack::getStackId)
+                .stacks(feed.getFeedStacks().stream()
+                        .map(feedStack -> feedStack.getTechStack().getImageUrl())
                         .collect(Collectors.toList()))
                 .build();
     }

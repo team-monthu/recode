@@ -11,4 +11,7 @@ public interface MemberRepository {
   Optional<Member> findByOauthProviderAndOauthId(OauthProvider oauthProvider, String oauthId);
 
   boolean existsByOauthProviderAndOauthId(OauthProvider oauthProvider, String oauthId);
+
+  Optional<Member> findById(Long id);
+
 }

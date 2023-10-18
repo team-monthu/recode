@@ -1,7 +1,6 @@
 package com.monthu.recode.domain.feed.dto;
 
 import com.monthu.recode.domain.feed.domain.Feed;
-import com.monthu.recode.domain.feed.domain.Feed.TechStack;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,27 +14,31 @@ public class FeedListResDto {
     private Long id;
     private String title;
     private String contents;
-    private Long writerId;
+    private Integer likeCount;
+    private Integer commentCount;
+    private MemberResDto writer;
     private Integer viewCount;
-    private Long adoptedCommentId;
-    private List<Long> stacks;
+    private CommentResDto adoptedComment;
+    private List<String> stacks;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     @Builder
-    public static FeedListResDto from(Feed feed) {
-        return FeedListResDto.builder()
-                .id(feed.getId())
-                .contents(feed.getContents().getHtml())
-                .adoptedCommentId(feed.getAdoptedCommentId())
-                .title(feed.getTitle())
-                .viewCount(feed.getViewCount())
-                .writerId(feed.getWriterId())
-                .createdAt(feed.getCreatedAt())
-                .modifiedAt(feed.getModifiedAt())
-                .stacks(feed.getStacks().stream().map(TechStack::getStackId)
-                        .collect(Collectors.toList()))
-                .build();
+    public FeedListResDto(Feed feed, MemberResDto writer, CommentResDto adoptedComment,
+            Integer likeCount, Integer commentCount) {
+        this.id = feed.getId();
+        this.title = feed.getTitle();
+        this.contents = feed.getContents().getHtml();
+        this.writer = writer;
+        this.viewCount = feed.getViewCount();
+        this.adoptedComment = adoptedComment;
+        this.createdAt = feed.getCreatedAt();
+        this.modifiedAt = feed.getModifiedAt();
+        this.stacks = feed.getFeedStacks().stream()
+                .map(feedStack -> feedStack.getTechStack().getImageUrl())
+                .collect(Collectors.toList());
+        this.likeCount = likeCount;
+        this.commentCount = commentCount;
     }
 
 }

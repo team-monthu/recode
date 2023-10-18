@@ -29,4 +29,9 @@ public class MemberRepositoryImpl implements MemberRepository {
   public boolean existsByOauthProviderAndOauthId(OauthProvider oauthProvider, String oauthId) {
     return memberJpaRepository.existsByOauthProviderAndOauthId(oauthProvider, oauthId);
   }
+
+  @Override
+  public Optional<Member> findById(Long id) {
+    return memberJpaRepository.findById(id);
+  }
 }
