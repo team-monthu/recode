@@ -5,6 +5,7 @@ import com.monthu.recode.domain.auth.application.oidc.IDTokenValidatorHandler;
 import com.monthu.recode.domain.auth.application.oidc.OIDCMember;
 import com.monthu.recode.domain.auth.dto.LoginRequestDto;
 import com.monthu.recode.domain.auth.dto.LoginResponseDto;
+import com.monthu.recode.domain.auth.dto.LoginWithSignUpResponseDto;
 import com.monthu.recode.domain.member.application.repository.MemberRepository;
 import com.monthu.recode.domain.member.domain.Member;
 import java.util.Optional;
@@ -31,13 +32,12 @@ public class LoginUseCase {
         oidcMember.getOauthId());
 
     if (savedMember.isEmpty()) {
-      return LoginResponseDto.newMember();
+      return new LoginWithSignUpResponseDto(oidcMember);
     }
-    
     Member member = savedMember.get();
     String accessToken = jwtProvider.generateAccessToken(member);
     String refreshToken = jwtProvider.generateRefreshToken();
     member.setRefreshToken(refreshToken);
-    return LoginResponseDto.loggedInMember(accessToken, refreshToken);
+    return LoginResponseDto.loggedIn(accessToken, refreshToken);
   }
 }

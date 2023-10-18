@@ -1,6 +1,5 @@
 package com.monthu.recode.domain.techStack.domain;
 
-import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import com.monthu.recode.global.entity.BaseTimeEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +12,11 @@ import lombok.Getter;
 @Entity
 @Table(name = "tech_stack")
 @Getter
-public class techStack extends BaseTimeEntity {
+public class TechStack extends BaseTimeEntity {
 
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "stack_id")
   private Long id;
 
   @Column
@@ -28,4 +28,7 @@ public class techStack extends BaseTimeEntity {
   @Column
   private String imageUrl;
 
+  public void tagged() {
+    this.taggedCount++;
+  }
 }

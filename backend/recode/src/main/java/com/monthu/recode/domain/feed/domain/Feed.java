@@ -1,22 +1,19 @@
 package com.monthu.recode.domain.feed.domain;
 
 import com.monthu.recode.domain.feed.infra.database.converter.ContentsConverter;
+import com.monthu.recode.domain.techStack.domain.TechStack;
 import com.monthu.recode.global.entity.BaseTimeEntity;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CollectionTable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -66,25 +63,16 @@ public class Feed extends BaseTimeEntity {
   @Column
   private Boolean isDeleted = Boolean.FALSE;
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(name = "feed_stacks",
-      joinColumns = @JoinColumn(name = "feed_id"))
-  private List<TechStack> stacks = new ArrayList<>();
+  @OneToMany(mappedBy = "feed", cascade = CascadeType.PERSIST)
+  private List<FeedStack> feedStacks = new ArrayList<>();
 
-  @Embeddable
-  @NoArgsConstructor(access = AccessLevel.PROTECTED)
-  @Getter
-  public static class TechStack {
-
-    private Long tech_stacks_id;
-
-    @Column(name = "stack_id")
-    private Long stackId;
-
-    public TechStack(Long stackId) {
-      this.stackId = stackId;
-    }
-
+  @Builder
+  public Feed(String title, String markdown, Long writerId, List<TechStack> stacks) {
+    this.title = title;
+    this.contents = new Contents(markdown);
+    this.writerId = writerId;
+    List<FeedStack> feedStacks = FeedStack.createFeedStacks(stacks, this);
+    this.feedStacks = feedStacks;
   }
 
   public void increaseViewCount(){
