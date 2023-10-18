@@ -23,10 +23,12 @@ public class FeedRepositoryImpl implements FeedRepository {
     return feedJpaRepository.save(feed);
   }
 
+  @Override
   public Optional<Feed> findById(Long id){
     return feedJpaRepository.findById(id);
   }
 
+  @Override
   public Page<Feed> findAll(Pageable pageable){
     return feedJpaRepository.findAllByOrderByModifiedAtDesc(pageable);
   }

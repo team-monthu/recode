@@ -1,8 +1,11 @@
 package com.monthu.recode.domain.feed.application;
 
-import com.monthu.recode.domain.feed.dto.ModifyFeedDto;
+import com.monthu.recode.domain.feed.dto.ModifyFeedReqDto;
 import com.monthu.recode.domain.feed.exception.FeedNotFoundException;
 import com.monthu.recode.domain.feed.infra.database.FeedRepositoryImpl;
+import com.monthu.recode.domain.techStack.domain.TechStack;
+import com.monthu.recode.domain.techStack.infra.database.TechStackRepositoryImpl;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,14 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class FeedModifyUseCase {
 
     private final FeedRepositoryImpl feedRepository;
+    private final TechStackRepositoryImpl techStackRepository;
 
+    // todo 수정시 기존 태그와 신규 태그 카운트 갱신
     @Transactional
-    public void modifyFeed(ModifyFeedDto modifyFeedDto) {
-        feedRepository.findById(modifyFeedDto.getId()).map(
+    public void modifyFeed(ModifyFeedReqDto modifyFeedReqDto) {
+        List<TechStack> techStacks = techStackRepository.findByIdIn(modifyFeedReqDto.getStackIds());
+
+        feedRepository.findById(modifyFeedReqDto.getId()).map(
                         feed -> {
-                            feed.updateFeed(modifyFeedDto.getTitle(), modifyFeedDto.getMarkdown(),
-                                    modifyFeedDto.getStacks());
-                            feedRepository.save(feed);
+                            feed.updateFeed(modifyFeedReqDto.getTitle(), modifyFeedReqDto.getMarkdown(),
+                                    techStacks);
                             return feed;
                         }
                 )

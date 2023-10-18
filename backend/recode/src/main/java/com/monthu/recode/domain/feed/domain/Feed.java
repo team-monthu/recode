@@ -26,19 +26,6 @@ import org.hibernate.annotations.Where;
 @NoArgsConstructor
 public class Feed extends BaseTimeEntity {
 
-  @Builder
-  public Feed(Long id, String title, String markdown, Long writerId, List<Long> ids) {
-    this.id = id;
-    this.title = title;
-    this.contents = new Contents(markdown);
-    this.writerId = writerId;
-    this.stacks = new ArrayList<>();
-    for (Long stackId : ids) {
-      TechStack techStack = new TechStack(stackId);
-      stacks.add(techStack);
-    }
-  }
-
   @Id
   @Column(name = "feed_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,6 +53,12 @@ public class Feed extends BaseTimeEntity {
   @OneToMany(mappedBy = "feed", cascade = CascadeType.PERSIST)
   private List<FeedStack> feedStacks = new ArrayList<>();
 
+  @OneToMany(mappedBy = "feed", cascade = CascadeType.PERSIST)
+  private List<FeedLike> feedLikes = new ArrayList<>();
+
+  @OneToMany(mappedBy = "feed", cascade = CascadeType.PERSIST)
+  private List<FeedScrap> feedScraps = new ArrayList<>();
+
   @Builder
   public Feed(String title, String markdown, Long writerId, List<TechStack> stacks) {
     this.title = title;
@@ -79,15 +72,10 @@ public class Feed extends BaseTimeEntity {
     this.viewCount++;
   }
 
-  public void updateFeed(String title, String markdown, List<Long> ids){
+  public void updateFeed(String title, String markdown, List<TechStack> techStacks){
     this.title = title;
     this.contents = new Contents(markdown);
-    List<TechStack> stacks = new ArrayList<>();
-    for (Long stackId : ids) {
-      TechStack techStack = new TechStack(stackId);
-      stacks.add(techStack);
-    }
-    this.stacks = stacks;
+    List<FeedStack> feedStacks = FeedStack.createFeedStacks(techStacks, this);
   }
 
   public void deleteFeed(){ this.isDeleted = true; }

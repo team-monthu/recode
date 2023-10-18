@@ -1,12 +1,11 @@
 package com.monthu.recode.domain.feed.application;
 
+import com.monthu.recode.domain.feed.application.repository.FeedRepository;
 import com.monthu.recode.domain.feed.domain.Feed;
-import com.monthu.recode.domain.feed.dto.FeedListResDto;
 import com.monthu.recode.domain.feed.dto.FindFeedDetailsResDto;
 import com.monthu.recode.domain.feed.dto.FindFeedDetailsWithMarkdownResDto;
 import com.monthu.recode.domain.feed.exception.FeedNotFoundException;
 import com.monthu.recode.domain.feed.infra.database.FeedRepositoryImpl;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class FeedSearchUseCase {
 
-    private final FeedRepositoryImpl feedRepository;
+    private final FeedRepository feedRepository;
 
 
     public FindFeedDetailsResDto searchFeedDetailsById(Long feedId, Boolean updateViewCount) {

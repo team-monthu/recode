@@ -6,7 +6,7 @@ import com.monthu.recode.domain.feed.application.FeedModifyUseCase;
 import com.monthu.recode.domain.feed.application.FeedSearchUseCase;
 import com.monthu.recode.domain.feed.domain.Feed;
 import com.monthu.recode.domain.feed.dto.FeedListResDto;
-import com.monthu.recode.domain.feed.dto.ModifyFeedDto;
+import com.monthu.recode.domain.feed.dto.ModifyFeedReqDto;
 import com.monthu.recode.domain.feed.dto.WriteFeedReqDto;
 import com.monthu.recode.global.dto.HttpResponse;
 import java.util.stream.Collectors;
@@ -51,12 +51,14 @@ public class FeedController {
                 feedSearchUseCase.searchFeedDetailsById(feedId, updateViewCount));
     }
 
+    // todo 매핑되는 주소 변경
     @GetMapping("/{feedId}")
     public ResponseEntity<?> findFeedDetailsWithMarkdown(@PathVariable Long feedId){
         return HttpResponse.okWithData(HttpStatus.OK, "피드 상세 조회를 반환합니다.",
                 feedSearchUseCase.searchFeedDetailsWithMarkdown(feedId));
     }
 
+    // todo 메인피드 로직 추가
     @GetMapping("/main")
     public ResponseEntity<?> findMainFeeds(Pageable pageable) {
         Page<Feed> feeds = feedSearchUseCase.searchMainFeeds(pageable);
@@ -67,8 +69,8 @@ public class FeedController {
     }
 
     @PatchMapping
-    public ResponseEntity<?> updateFeed(@RequestBody ModifyFeedDto modifyFeedDto) {
-        feedModifyUseCase.modifyFeed(modifyFeedDto);
+    public ResponseEntity<?> updateFeed(@RequestBody ModifyFeedReqDto modifyFeedReqDto) {
+        feedModifyUseCase.modifyFeed(modifyFeedReqDto);
         return HttpResponse.ok(HttpStatus.OK, "피드 수정이 완료되었습니다.");
     }
 
@@ -77,5 +79,13 @@ public class FeedController {
         feedDeleteUseCase.deleteFeed(feedId);
         return HttpResponse.ok(HttpStatus.OK, "피드가 삭제되었습니다.");
     }
+
+    // todo 특정 멤버가 쓴 피드 조회
+    // todo 특정 멤버가 댓글 단 피드 조회
+    // todo 내가 스크랩한 피드 조회
+    // todo 추천 피드 조회
+    // todo 댓글 채택
+    // todo 피드 좋아요
+    // todo 피드 스크랩
 
 }
