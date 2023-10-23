@@ -6,7 +6,11 @@ import lombok.Getter;
 @Getter
 public class LoginRequestDto {
 
-  private OauthProvider oauthProvider;
-  private String idToken;
+    private OauthProvider oauthProvider;
+    private String idToken;
 
+    public LoginRequestDto(OauthProvider oauthProvider, String idToken) {
+        this.oauthProvider = oauthProvider;
+        this.idToken = idToken;
+    }
 }
