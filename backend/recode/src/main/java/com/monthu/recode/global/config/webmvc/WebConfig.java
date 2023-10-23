@@ -21,11 +21,11 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(jwtLoginUserArgumentResolver());
+        argumentResolvers.add(jwtLoginMemberArgumentResolver());
     }
 
     @Bean
-    HandlerMethodArgumentResolver jwtLoginUserArgumentResolver() {
-        return new JwtLoginUserArgumentResolver();
+    HandlerMethodArgumentResolver jwtLoginMemberArgumentResolver() {
+        return new JwtLoginMemberArgumentResolver();
     }
 }

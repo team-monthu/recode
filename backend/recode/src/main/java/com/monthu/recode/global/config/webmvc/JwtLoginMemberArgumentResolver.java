@@ -8,7 +8,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-public class JwtLoginUserArgumentResolver implements HandlerMethodArgumentResolver {
+public class JwtLoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -23,8 +23,8 @@ public class JwtLoginUserArgumentResolver implements HandlerMethodArgumentResolv
             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext()
                                                              .getAuthentication();
-        Long userId = Long.valueOf(authentication.getPrincipal()
-                                                 .toString());
-        return new AuthMember(userId);
+        Long memberId = Long.valueOf(authentication.getPrincipal()
+                                                   .toString());
+        return new AuthMember(memberId);
     }
 }
