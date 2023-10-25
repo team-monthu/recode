@@ -12,10 +12,11 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 public class CacheConfig {
 
-  @Bean
-  public CacheManager cacheManager() {
-    SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
-    simpleCacheManager.setCaches(List.of(new ConcurrentMapCache("kakaoPublicKeys")));
-    return simpleCacheManager;
-  }
+    @Bean
+    public CacheManager cacheManager() {
+        SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
+        simpleCacheManager.setCaches(List.of(new ConcurrentMapCache("kakaoPublicKeys"),
+                new ConcurrentMapCache("googlePublicKeys")));
+        return simpleCacheManager;
+    }
 }
